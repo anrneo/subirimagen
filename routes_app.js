@@ -57,21 +57,14 @@ router.route('/imagenes/:id')
     })
     .post(function(req,res){
       var extension=req.files.archivo.name.split('.').pop()
-      var data = {
+      var imagen = new Imagen({
         title: req.body.title,
         creator: res.locals.user._id,
         extension: extension
-      }
-      var imagen = new Imagen(data);
-      imagen.save(function(err){
-        if(!err){
+      });
+      imagen.save().then(function(ok){
           fs.rename(req.files.archivo.path, 'public/imagenes/'+imagen._id+'.'+extension)
           res.redirect('/app/imagenes/'+imagen._id)
-        }
-        else{
-          console.log(imagen)
-          res.render(err)
-        }
       })
     })
 
