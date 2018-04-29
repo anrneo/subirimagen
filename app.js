@@ -29,7 +29,6 @@ app.use(cookieSession({
 app.use(upload_image.parse({keepExtensions:true}))
 app.set('view engine', 'jade')
 app.get('/', function(req, res){
-	console.log(req.session.user_id)
 	res.render('index')
 })
 app.get('/signup', function(req, res){

@@ -40,17 +40,21 @@ router.route('/imagenes/:id')
    })
 
   .delete(function(req,res){
-    Imagen.findOneAndRemove({_id: req.params.id},function(err){
+    Imagen.findById({_id:req.params.id}).then((us)=>{
+      fs.unlink('public/imagenes/'+us._id+'.'+us.extension)
+    
+    Imagen.findOneAndRemove({_id: req.params.id}).exec(function(err,ok){
       if(!err){
         res.redirect('/app/imagenes')
       }else{
         console.log(err)
       }
     })
+    })
   })
   router.route('/imagenes')
     .get(function(req,res){
-      Imagen.find({creator: res.locals.user._id},function(err,imagenes){
+      Imagen.find({creator: res.locals.user._id}).exec(function(err,imagenes){
         if(err){res.rendirect('/app');return;}
         res.render('app/imagenes/index',{imagenes: imagenes})
       })
