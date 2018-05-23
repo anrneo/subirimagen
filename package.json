@@ -16,9 +16,9 @@
     "express-formidable": "^1.0.0",
     "express-session": "^1.15.6",
     "formidable": "^1.1.1",
-    "jade": "^1.11.0",
     "method-override": "^2.3.10",
     "mongoose": "^5.0.0-rc2",
+    "pug": "^2.0.3",
     "socket.io": "^2.0.4"
   }
 }

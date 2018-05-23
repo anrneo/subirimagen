@@ -28,7 +28,7 @@ app.use(cookieSession({
 	keys: ['llave-1','llave-2']
 }))
 app.use(upload_image.parse({keepExtensions:true}))
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 app.get('/', function(req, res){
 	res.render('index')
 })
