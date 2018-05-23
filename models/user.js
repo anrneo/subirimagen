@@ -6,6 +6,8 @@ var email_match = [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,'ingresa un e
 var password_validation={
   validator: function(p){
     return this.password_confirmation==p
+    console.log(p);
+    
   },
   message:'Las contraseñas no son iguales'
 }
@@ -23,6 +25,7 @@ user_schema.virtual('password_confirmation').get(function(){
   return this.p_c
 }).set(function(password){
   this.p_c = password
+  
 })
 var User = mongoose.model('User', user_schema)
 

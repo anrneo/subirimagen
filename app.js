@@ -1,6 +1,7 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var User = require('./models/user').User
+const crypto = require('crypto');
 //var session = require('express-session')
 var cookieSession = require('cookie-session')
 var router_app = require('./routes_app')
@@ -33,7 +34,6 @@ app.get('/', function(req, res){
 })
 app.get('/signup', function(req, res){
 	User.find(function(err, doc){
-		console.log(doc)
 		res.render('signup')
 	})
 })
@@ -43,9 +43,18 @@ app.get('/login', function(req, res){
 
 
 app.post('/users', function(req, res){
+
+const secret1 = req.body.password;
+const hash1 = crypto.createHmac('sha256', secret1)
+                   .update('I love cookies')
+                   .digest('hex');
+const secret2 = req.body.password_confirmation;
+const hash2 = crypto.createHmac('sha256', secret2)
+                   .update('I love cookies')
+                   .digest('hex');
 	var user=new User({email: req.body.email,
-					    password: req.body.password,
-						password_confirmation: req.body.password_confirmation,
+					    password: hash1,
+						password_confirmation: hash2,
 						username: req.body.Username
 						})
 user.save().then(function(us){
@@ -56,8 +65,14 @@ user.save().then(function(us){
 	})
 })
 app.post('/sessions', function(req, res){
-		User.findOne({email:req.body.email,password:req.body.password},
+	const secret1 = req.body.password;
+const hash1 = crypto.createHmac('sha256', secret1)
+                   .update('I love cookies')
+				   .digest('hex');
+	
+		User.findOne({email:req.body.email,password:hash1},
 		function(err,user){
+			
 			req.session.user_id=user._id
 			res.redirect('/app')
 		})
@@ -65,4 +80,4 @@ app.post('/sessions', function(req, res){
 app.use('/app', session_middleware)
 app.use('/app', router_app)
 server.listen(3000)
-console.log("conectado en puerto 3000")
+console.log("conectado en puerto http://localhost:3000")
